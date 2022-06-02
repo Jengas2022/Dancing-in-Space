@@ -1,0 +1,114 @@
+'centauri portugal
+repetition=0
+connected="False"            'initialize the connected variable to "false"
+id= Mailbox.Create("centauri")    'define ID 
+Mailbox.Connect("NOVA")      'connect CENTAURI to NOVA
+
+
+bluetooth() 
+Program.Delay(5000)
+
+Motor.StartSync("AD",-80,-80)
+Program.Delay(6000)
+Motor.Stop("AD","True")
+Motor.Start("B",-30)
+Program.Delay(1000)
+Motor.Stop("B","True")
+Program.Delay(1400)
+Motor.Start("B",30)
+Program.Delay(1000)
+Motor.Stop("B","True")
+Thread.Run = Head
+Motor.StartSync("AD",-80,80)
+Program.Delay(5000)
+Motor.Stop("AD","True")
+Program.Delay(16600)
+
+
+
+
+Sub prova1
+  Motor.Start("B",50)
+  Program.Delay(1000)
+  Motor.Stop("B","True")
+  
+  Program.Delay(1000)
+ 
+  Motor.Start("C",10)
+  Program.Delay(800)
+  Motor.Stop("C","True") 
+  
+  Program.Delay(1000)
+ 
+  Motor.Start("C",-10)
+  Program.Delay(800)
+  Motor.Stop("C","True") 
+  
+  Program.Delay(1000)
+ 
+  Motor.Start("C",10)
+  Program.Delay(800)
+  Motor.Stop("C","True") 
+  
+  Program.Delay(1000)
+ 
+  Motor.Start("C",-10)
+  Program.Delay(800)
+  Motor.Stop("C","True") 
+  
+  Motor.Start("B",-50)
+  Program.Delay(1000)
+  Motor.Stop("B","True")
+  
+  Motor.Start("B",50)
+  Program.Delay(1000)
+  Motor.Stop("B","True") 
+  
+  Motor.Start("B",-50)
+  Program.Delay(1000)
+  Motor.Stop("B","True")
+  
+  
+  Program.Delay(10000)
+Endsub
+
+
+
+
+
+Sub bluetooth
+  while (connected="False")
+    Mailbox.Send("NOVA","nova","Connecting")    'send message to NOVA
+    control=Mailbox.IsAvailable(id)               'control if the message is available
+ 
+    if (control="True")  Then
+        novaMessage=Mailbox.Receive(id)           'store the NOVA message in a variable
+        if novaMessage="Connected" Then             'continue the program only if the message is "start"
+            connected="True"
+            novaMessage="null"
+        else    
+           connected="False"
+        EndIf
+
+    Else
+        connected="False"
+    
+    EndIf 
+  Endwhile
+ 
+    
+  EndSub
+  
+  Sub   Head
+  Motor.Start("C",-10)
+  Program.Delay(500)
+  For i=1 To 10
+    Motor.Start("C",10)
+    Program.Delay(1000)
+    Motor.Start("C",-10)
+    Program.Delay(1000)
+  EndFor
+  Motor.Start("C",10)
+  Program.Delay(500)  
+Endsub
+
