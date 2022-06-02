@@ -1,9 +1,9 @@
 # Dancing in Space
-Here, you can see the details of our project for the robocup onstage competition. We have progammed 3 robots (2 smaller and 1 bigger), who dance together.
+Here, you can see the details of our project for the robocup onstage competition. We have progammed 4 robots (1 spider, 2 medium and 1 bigger), who dance together.
 
 ![robots](./Images/Robots.jpeg)
 
-Our performance is based on 2 pieces of music: "We will rock you" by Queen and "Animals" by Martin Garrix. The 3 robots will execute an engaging choreography, syncronized with each other by  Lego Bluetooth.
+Our performance is based on 2 pieces of music:"Also sprach Zarathustra" by Richard Strauss and "We will rock you" by Queen. The 4 robots will execute an engaging choreography, syncronized with each other by Lego Bluetooth.
 
 ![bluetooth](./Images/Bluetooth.jpeg)
 
