@@ -1,0 +1,126 @@
+connected="False"
+angleA=0
+angleC=0
+etnaMessage=""
+id=Mailbox.Create("etna")
+Mailbox.Connect("ALPHA")
+
+bluetooth2()
+
+Motor.Stop("AC","false")
+Program.Delay(400)
+Motor.ResetCount("AC")
+Program.Delay(6600)
+Motor.Start("C",-40)
+Program.Delay(1000)
+Motor.Stop("C","True")
+Motor.Start("B",40)
+Program.Delay(200)
+Motor.Start("B",-40)
+Program.Delay(400)
+Motor.Start("B",40)
+Program.Delay(400)
+Motor.Start("B",-40)
+Program.Delay(200)
+Motor.Stop("B","True")
+Motor.Start("C",10)
+Program.Delay(200)
+Motor.Stop("BC","False")
+Program.Delay(26600)
+applausometer()
+
+Sub applausometer
+  
+  angleControl()
+  Thread.run=bluetooth
+
+  
+  while ("true")
+    if  etnaMessage="high" Then
+      Motor.Start("D",30)
+      Motor.Start("B",-30)
+      if ((angleA > -150) and (angleC > -150)) then
+        Motor.StartSync("AC",-10,-10)
+      elseif (angleA > -150 and angleC <= -150) then
+        Motor.Start("A",-10)
+        Motor.Stop("C","true")
+      elseif (angleA <= -150 and angleC > -150) then
+        Motor.Start("C",-10)
+        Motor.Stop("A","true")
+      elseif (angleA <= -150 and angleC <= -150) then
+        Motor.Stop("AC","false")
+      endif         
+      angleControl()         
+    ElseIf (etnaMessage="medium") Then
+      if (angleA > -150 and angleC > -150) then
+        Motor.StartSync("AC",-10,-10)
+        Motor.Stop("DB","true")
+      elseif (angleA > -150 and angleC <= -150) then
+        Motor.Start("A",-10)
+        Motor.Stop("C","true")
+        Motor.Stop("DB","true")
+      elseif (angleA <= -150 and angleC > -150) then
+        Motor.Start("C",-10)
+        Motor.Stop("A","true")
+        Motor.Stop("DB","true")
+      elseif (angleA <= -150 and angleC <= -150) then
+        Motor.Stop("AC","false")
+        Motor.Stop("DB","true")
+      endif
+      angleControl()
+    Elseif etnaMessage="low"  Then        
+      angleControl()
+      if (angleA < -20 and angleC < -20) then
+        Motor.StartSync("AC",10,10)
+        Motor.Stop("DB","true")
+      elseif (angleA < -20 and angleC >= -20) then
+        Motor.Start("A",10)
+        Motor.Stop("C","true")
+        Motor.Stop("DB","true")
+      elseif (angleA >= -20 and angleC < -20) then
+        Motor.Start("C",10)
+        Motor.Stop("A","true")
+        Motor.Stop("DB","true")
+      elseif (angleA >= -20 and angleC >= -20) then
+        Motor.Stop("AC","false")
+        Motor.Stop("DB","true")
+      endif
+      angleControl()
+    EndIf 
+Endwhile         
+EndSub
+
+Sub bluetooth 
+  While ("true")
+    etnaMessage=Mailbox.Receive(id)
+  EndWhile
+EndSub
+
+Sub angleControl
+  angleA=Motor.GetCount("A")
+  angleC=Motor.GetCount("C")
+EndSub
+
+Sub bluetooth2
+  while (connected="False")
+    Mailbox.Send("ALPHA","alpha","Connecting")    'send message to VEGA
+    control=Mailbox.IsAvailable(id)               'control if the message is available
+    
+    if (control="True")  Then
+        alphaMessage=Mailbox.Receive(id)           'store the VEGA message in a variable
+        if alphaMessage="Connected" Then             'continue the program only if the message is "start"
+            connected="True"
+            alphaMessage="null"
+        else    
+           connected="False"
+        EndIf
+
+    Else
+        connected="False"
+    
+    EndIf 
+  Endwhile         
+EndSub
+
+
+
