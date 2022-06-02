@@ -1,0 +1,377 @@
+    ''vega sinistra
+'A spalla  
+'B gomito 
+'C testa
+'D braccio 
+
+angle=0
+repetation=1
+time=0
+id= Mailbox.Create("vega")                'define ID
+Mailbox.Connect("SIRIO")               'connect VEGA  to SIRIO
+
+Motor.Stop("A","true")         'stop all motors
+Motor.Stop("B","true")         'stop all motors
+Motor.Stop("C","true")         'stop all motors
+Motor.Stop("D","true")         'stop all motors
+
+
+
+blu()
+start()
+part1()
+refrain()
+part2()
+refrain()
+Sub blu
+  sirioMessage=Mailbox.Receive(id)          'store the SIRIO message in a variable
+
+If sirioMessage = "Connecting" Then         'send "Connected" to SIRIO only if you receive "Connecting" as a message
+  Mailbox.Send("SIRIO","sirio","Connected")   
+  sirioMessage="null"
+EndIf
+  
+EndSub
+
+Sub start
+  Program.Delay(7800)
+  Motor.Start("B",40)               'move elbow
+  Program.Delay(200)
+  Motor.Start("A",100)
+  Program.Delay(200)
+  Motor.Stop("B","true")
+  
+  Motor.Start("B",-35)     'move shoulder and elbow
+  Program.Delay(400)
+  Motor.Stop("A","True")
+  Motor.Stop("B","True")
+  
+  Program.Delay(4400)
+  Motor.Start("A",-100)
+  Program.Delay(600)
+  Motor.Stop("A","True")
+  repetation=4
+  walk() 
+  Program.Delay(10000)
+  Program.Delay(600)
+  Program.Delay(2000)
+  Program.Delay(600)
+EndSub
+
+Sub part1
+  time=375
+  Motor.Start("A",20)               'move shoulder back
+  Program.Delay(time)
+  Motor.Stop("A","true")
+  
+  Motor.Start("A",-40)               'move shoulder forward
+  Program.Delay(time)
+  Motor.Stop("A","true") 
+  
+  Motor.Start("A",40)               'move shoulder back
+  Program.Delay(time)
+  Motor.Stop("A","true") 
+  
+  Program.Delay(time)
+  
+  '------------------------------V
+  
+  Motor.Start("A",-40)               'move shoulder forward
+  Program.Delay(time)
+  Motor.Stop("A","true") 
+  
+  Motor.Start("A",40)               'move shoulder back
+  Program.Delay(time)
+  Motor.Stop("A","true") 
+  
+  Motor.Start("A",-40)               'move shoulder forward
+  Program.Delay(time)
+  Motor.Stop("A","true") 
+  
+  Program.Delay(time)
+  
+  '------------------------------V
+  
+  Motor.Start("A",50)               'move shoulder back
+  Program.Delay(2*time)
+  Motor.Stop("A","true")   
+  
+  Program.Delay(2*time)
+  
+  '------------------------------:|
+  
+  Motor.Start("D",30)               'move arm forward
+  Program.Delay(time)
+  Motor.Stop("D","true")
+  
+  Motor.Start("D",-25)               'move arm back
+  Program.Delay(time)
+  Motor.Stop("D","true")
+  
+  Motor.Start("D",30)               'move arm forward
+  Program.Delay(time)
+  Motor.Stop("D","true")
+  
+  Program.Delay(time)
+  
+  '------------------------------V
+ 
+  Motor.Start("A",-70)               'move shoulder forward
+  Program.Delay(time)
+  Motor.Stop("A","true")  
+  
+  Motor.Start("D",22)               'move arm up
+  Program.Delay(2.5*time)
+  Motor.Stop("D","true")
+   
+  Program.Delay((0.5)*time)
+  
+  '------------------------------V
+  
+  Motor.Start("A",20)               'move shoulder back
+  Program.Delay(time)
+  Motor.Stop("A","true")  
+ 
+  Motor.Start("A",-40)               'move shoulder forward
+  Program.Delay(time)
+  Motor.Stop("A","true") 
+  
+  Program.Delay(2*time)
+  
+  '------------------------------V
+  
+  Motor.Start("B",20)               'move elbow forward
+  Program.Delay(time)
+  Motor.Stop("B","true")
+ 
+  Motor.Start("B",-40)               'move elbow back
+  Program.Delay(time)
+  Motor.Stop("B","true")  
+  
+  Motor.Start("B",20)               'move elbow forward
+  Program.Delay(time)
+  Motor.Stop("B","true")
+  
+  Program.Delay(time)
+  
+  '------------------------------V
+  
+  Motor.Start("A",-40)               'move shoulder forward
+  Program.Delay(time)
+  Motor.Stop("A","true") 
+  
+  Program.Delay(3*time)
+  
+  '------------------------------V
+  
+  For i=1 To 5
+    Motor.Start("D",-13)               'move arm back
+    Program.Delay(time)
+    Motor.Stop("D","true")
+    
+    Motor.Start("D",14)               'move arm forward
+    Program.Delay(time)
+    Motor.Stop("D","true")
+    
+    Program.Delay(2*time)
+  EndFor 
+
+
+  Motor.Start("A",40)               'move shoulder back
+  Program.Delay(2*time)
+  Motor.Stop("A","true")  
+  
+  Motor.Start("D",-45)               'move arm forward
+  Program.Delay(time)
+  Motor.Stop("D","true")
+  
+  Program.Delay(time)
+EndSub
+
+
+Sub refrain
+  Motor.ResetCount("A")
+  Thread.Run = brake
+  time=375
+
+ 
+  Motor.Start("B",40)           'move the elbow 
+  Program.Delay(2*time)
+  Motor.Stop("B","True")
+  
+  Motor.Start("B",-40)           'move the elbow
+  Program.Delay(2*time)
+  Motor.Stop("B","True")
+  
+  Motor.Start("B",40)           'move the elbow 
+  Program.Delay(2*time)
+  Motor.Stop("B","True")
+  
+  Motor.Start("B",-40)           'move the elbow
+  Program.Delay(2*time)
+  Motor.Stop("B","True")
+  
+  Motor.Start("A",-30)        'move the  shoulder
+  Program.Delay(time)
+  Motor.Start("D",70)          'move the arm 
+  Program.Delay(time)
+  Motor.Stop("A","True")
+  Motor.Stop("D","true")  
+    
+  
+  Program.Delay(time)
+  Motor.Start("D",-40)        'raise the arm down 
+  Program.Delay(time)
+  Motor.Stop("D","True")  
+  
+  Motor.Start("D",28)        'raise the arm up 
+  Program.Delay(2*time)
+  Motor.Stop("D","True")  
+  
+  Program.Delay(time)
+  Motor.StartSync("AD",35,-40)        'raise the shoulder and arm down
+  Program.Delay(time)
+  Motor.Stop("D","True")
+  Motor.Stop("A","true")
+
+  Motor.Start("B",40)           'move the elbow 
+  Program.Delay(2*time)
+  Motor.Stop("B","True")
+  
+  Motor.Start("B",-40)           'move the elbow
+  Program.Delay(2*time)
+  Motor.Stop("B","True")
+  
+  Motor.Start("B",40)           'move the elbow 
+  Program.Delay(2*time)
+  Motor.Stop("B","True")
+  
+  Motor.Start("B",-40)           'move the elbow
+  Program.Delay(2*time)
+  Motor.Stop("B","True")
+    
+  Motor.Start("A",-20)      'move the  shoulder
+  Program.Delay(time)
+  Motor.Start("D",70)          'move the arm 
+  Program.Delay(time)
+  Motor.Stop("A","True")
+  Motor.Stop("D","true") 
+  
+  Program.Delay(time)
+  Motor.Start("D",-40)        'raise the arm down 
+  Program.Delay(time)
+  Motor.Stop("D","True")  
+  
+  Motor.Start("D",28)        'raise the arm up 
+  Program.Delay(2*time)
+  Motor.Stop("D","True")  
+  
+  Program.Delay(time)
+  Motor.Start("D",-40)        'raise the shoulder and arm down
+  Program.Delay(time)
+  Motor.Stop("D","False")
+  
+  
+EndSub
+
+Sub part2
+  time=375
+  repetation=9
+  Thread.Run = head
+  walk()
+  Motor.Start("A",60)      'move shoulder and elbow
+  Program.Delay(200)
+  Motor.Start("D",35)     
+  Program.Delay(400)
+  Motor.Stop("A","True")
+  Motor.Stop("D","True")
+  
+EndSub
+
+Sub head
+  For t=1 To 4
+    
+    Motor.Start("C",20)           'move the head
+    Program.Delay(time)
+    Motor.Stop("C","true")
+    
+    Motor.Start("C",-40)           'move the head
+    Program.Delay(time)
+    Motor.Stop("C","true")
+    
+    Motor.Start("C",40)           'move the head
+    Program.Delay(time)
+    Motor.Stop("C","true")
+    
+    Program.Delay(time)
+  
+    Motor.Start("C",-40)           'move the head
+    Program.Delay(time)
+    Motor.Stop("C","true")
+    
+    Motor.Start("C",40)           'move the head
+    Program.Delay(time)
+    Motor.Stop("C","true")
+    
+    Motor.Start("C",-20)           'move the head
+    Program.Delay(time)
+    Motor.Stop("C","true")
+    
+    Program.Delay(time)
+ EndFor 
+EndSub
+
+
+sub elbow  
+  For i= 1 To repetation
+    Motor.StartPower("B",50)       'move the elbow close
+    Program.Delay(400)
+    Motor.Stop("B","True")
+  
+    Motor.StartPower("B",-50)      'move the elbow open
+    Program.Delay(400)
+    Motor.Stop("B","True") 
+
+  EndFor
+EndSub
+
+Sub walk
+  Motor.StartSync("AB",50,50)       'move the shoulder and elbow forward 
+  Program.Delay(300)
+  Motor.Stop("AB","True") 
+  
+  
+  For i=1 To repetation
+    Motor.Start("A",-50)    'move the shoulder and elbow back 
+    Program.Delay(300)
+    Motor.Start("B",-49)
+    Program.Delay(300)
+    Motor.Stop("AB","True") 
+  
+    Motor.Start("A",50)    'move the shoulder and elbow back 
+    Program.Delay(300)
+    Motor.Start("B",50)
+    Program.Delay(300)
+    Motor.Stop("AB","True")  
+  EndFor
+  
+  Motor.StartSync("AB",-50,-49)       'move the shoulder and elbow back 
+  Program.Delay(300)
+  Motor.Stop("A","True") 
+  Motor.Stop("B","True") 
+   
+EndSub 
+
+
+
+
+Sub brake
+  While ("True")
+    angle = Motor.GetCount("A")
+    If angle >= 89 Then
+      Motor.Stop("A","True")
+    EndIf
+  EndWhile
+EndSub  
+
+
