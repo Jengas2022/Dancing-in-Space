@@ -1,0 +1,138 @@
+angleA=0
+angleC=0
+angleCondition = (angleA>-150 Or angleC>-150)
+id=Mailbox.Create("alpha")      'define ID 
+Mailbox.Connect("ETNA")         'connect ALPHA to ETNA
+
+
+bluetooth2()
+Motor.Stop("AC","false")
+Program.Delay(400)
+Motor.ResetCount("AC")
+Program.Delay(11600)
+Motor.Start("C",-40)
+Program.Delay(1000)
+Motor.Stop("C","True")
+Motor.Start("B",-40)
+Program.Delay(200)
+Motor.Start("B",40)
+Program.Delay(400)
+Motor.Start("B",-40)
+Program.Delay(400)
+Motor.Start("B",40)
+Program.Delay(200)
+Motor.Stop("B","True")
+Motor.Start("C",10)
+Program.Delay(200)
+Motor.Stop("BC","False")
+Program.Delay(21600)
+
+
+
+song3()
+
+Sub song3
+  
+  Thread.Run=bluetooth
+  While ("true")
+    value=Sensor.ReadPercent(1)
+    angleA=Motor.GetCount("A")
+    angleC=Motor.GetCount("C")
+    While (value<100 And angleCondition)
+      While (value<70 And angleCondition)
+        While (value<40 And angleCondition)
+          hype="low"
+          angleA=Motor.GetCount("A")
+          angleC=Motor.GetCount("C")
+          if (angleA < -20 and angleC < 20) then
+            Motor.StartSync("AC",10,10)
+            Motor.Stop("DB","true")
+          elseif (angleA < -20 and angleC >= -20) then
+           Motor.Start("A",10)
+           Motor.Stop("C","true")
+           Motor.Stop("DB","true")
+         elseif (angleA >= -20 and angleC < -20) then
+            Motor.Start("C",10)
+            Motor.Stop("A","true")
+            Motor.Stop("DB","true")
+         elseif (angleA >= -20 and angleC >= -20) then
+            Motor.Stop("AC","false")
+           Motor.Stop("DB","true")
+         endif
+         value=Sensor.ReadPercent(1)
+         angleA=Motor.GetCount("A")
+         angleC=Motor.GetCount("C") 
+                
+        EndWhile    
+        hype="medium"          
+        if (angleA > -150 and angleC > -150) then
+          Motor.StartSync("AC",-10,-10)
+          Motor.Stop("DB","true")
+        elseif (angleA > -150 and angleC <= -150) then
+          Motor.Start("A",-10)
+          Motor.Stop("C","true")
+          Motor.Stop("DB","true")
+        elseif (angleA <= -150 and angleC > -150) then
+          Motor.Start("C",-10)
+          Motor.Stop("A","true")
+          Motor.Stop("DB","true")
+        elseif (angleA <= -150 and angleC <= -150) then
+          Motor.Stop("AC","false")
+          Motor.Stop("DB","true")
+        endif
+        value=Sensor.ReadPercent(1)
+        angleA=Motor.GetCount("A")
+        angleC=Motor.GetCount("C")
+      EndWhile
+      hype="high" 
+      Motor.Start("D",30)
+      Motor.Start("B",-30)
+      if (angleA > -150 and angleC > -150) then
+        Motor.StartSync("AC",-10,-10)
+      elseif (angleA > -150 and angleC <= -150) then
+        Motor.Start("A",-10)
+        Motor.Stop("C","true")
+      elseif (angleA <= -150 and angleC > -150) then
+        Motor.Start("C",-10)
+        Motor.Stop("A","true")
+      elseif (angleA <= -150 and angleC <= -150) then
+        Motor.Stop("AC","false")
+      endif
+      value=Sensor.ReadPercent(1)
+      angleA=Motor.GetCount("A")
+      angleC=Motor.GetCount("C")
+    EndWhile
+    Motor.Stop("DB","true")
+    value=Sensor.ReadPercent(1)
+    angleA=Motor.GetCount("A")
+    angleC=Motor.GetCount("C")
+    Motor.Stop("ABCD","true")        
+  EndWhile
+EndSub
+
+
+Sub bluetooth 
+  while ("true")                  'send message to ETNA
+    if (hype="high") then
+      Mailbox.Send("ETNA","etna","high")    
+    ElseIf hype="medium" then
+      Mailbox.Send("ETNA","etna","medium")
+    Elseif hype="low"  then      
+      Mailbox.Send("ETNA","etna","low")
+    EndIf
+  Endwhile         
+EndSub
+
+Sub bluetooth2
+  etnaMessage=Mailbox.Receive(id)          'store the SIRIO message in a variable
+
+If etnaMessage = "Connecting" Then         'send "Connected" to SIRIO only if you receive "Connecting" as a message
+  Mailbox.Send("ETNA","etna","Connected")   
+  etnaMessage="null"
+EndIf
+  
+EndSub
+
+
+
+
