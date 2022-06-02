@@ -1,0 +1,101 @@
+'nova portugal 
+id= Mailbox.Create("nova")                'define ID
+Mailbox.Connect("CENTAURI")                  'connect NOVA to CENTAURI
+repetition=0
+
+
+blu()
+
+Motor.StartSync("AD",-80,-80)
+Program.Delay(6000)
+Motor.Stop("AD","True")
+Motor.Start("B",30)
+Program.Delay(1000)
+Motor.Stop("B","True")
+Program.Delay(1400)
+Motor.Start("B",-30)
+Program.Delay(1000)
+Motor.Stop("B","True")
+Thread.Run = Head
+Motor.StartSync("AD",-80,80)
+Program.Delay(5000)
+Motor.Stop("AD","True")
+Program.Delay(21600)
+
+
+
+
+
+Sub prova1
+  Motor.Start("B",50)
+  Program.Delay(1000)
+  Motor.Stop("B","True")
+  
+  Program.Delay(1000)
+ 
+  Motor.Start("C",10)
+  Program.Delay(800)
+  Motor.Stop("C","True") 
+  
+  Program.Delay(1000)
+ 
+  Motor.Start("C",-10)
+  Program.Delay(800)
+  Motor.Stop("C","True") 
+  
+  Program.Delay(1000)
+ 
+  Motor.Start("C",10)
+  Program.Delay(800)
+  Motor.Stop("C","True") 
+  
+  Program.Delay(1000)
+ 
+  Motor.Start("C",-10)
+  Program.Delay(800)
+  Motor.Stop("C","True") 
+  
+  Motor.Start("B",-50)
+  Program.Delay(1000)
+  Motor.Stop("B","True")
+  
+  Motor.Start("B",50)
+  Program.Delay(1000)
+  Motor.Stop("B","True") 
+  
+  Motor.Start("B",-50)
+  Program.Delay(1000)
+  Motor.Stop("B","True")
+  
+  
+  Program.Delay(10000)
+Endsub
+
+
+
+
+
+
+
+Sub blu
+  centauriMessage=Mailbox.Receive(id)          'store the CENTAURI message in a variable
+
+If centauriMessage = "Connecting" Then       'send "Connected" to CENTAURI only if you receive "Connecting" as a message
+  Mailbox.Send("CENTAURI","centauri","Connected")   
+  centauriMessage="null"
+EndIf
+  
+EndSub
+
+Sub   Head
+  Motor.Start("C",10)
+  Program.Delay(500)
+  For i=1 To 10
+    Motor.Start("C",-10)
+    Program.Delay(1000)
+    Motor.Start("C",10)
+    Program.Delay(1000)
+  EndFor
+  Motor.Start("C",-10)
+  Program.Delay(500)  
+Endsub
